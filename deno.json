@@ -3,7 +3,12 @@
     "dev": "deno run -A --no-check --watch ./server.jsx",
     "test": "deno test --allow-all",
     "build": "deno run -A ./build.js",
-    "start": "ULTRA_MODE=production deno run -A --no-remote ./server.js"
+    "start": "ULTRA_MODE=production deno run -A --no-remote ./server.js",
+
+    "prisma:init": "deno run -A --allow-read --allow-env --allow-write npm:prisma@^4.13 init",
+    "prisma:push": "deno run -A npm:prisma@^4.13 db push",
+    "prisma:generate": "deno run -A npm:prisma@^4.13 generate --data-proxy",
+    "prisma:seed": "deno run -A prisma/seed.js"
   },
   "compilerOptions": {
     "jsx": "react-jsxdev",

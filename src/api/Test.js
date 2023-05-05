@@ -1,15 +1,18 @@
+import { prisma } from "../../datebase.js";
+
 export const TestApi = (server) => {
-  const contentType = {
-    "content-type": "application/json; charset=utf-8",
-  };
+  server.get("/db/test", async (c) => {
+    // get data from db
+    const res = await prisma.user.findMany();
+
+    return send(c, res);
+  });
 
   server.post("/test/:id", async (c) => {
     // const page = c.req.query("page");
     const id = c.req.param("id");
 
-    const res = JSON.stringify({ test: "test" + id });
-
-    return c.body(res, 200, contentType);
+    return send(res, { test: "test" + id });
   });
 
   server.get("/test", async (c) => {
@@ -20,8 +23,15 @@ export const TestApi = (server) => {
     const page = c.req.query("page");
     const id = c.req.param("id");
 
-    const res = JSON.stringify({ test: id, page });
-
-    return c.body(res, 200, contentType);
+    return send(c, { test: id, page });
   });
+};
+
+const send = (context, res, code = 200) => {
+  const contentType = {
+    "content-type": "application/json; charset=utf-8",
+  };
+  const resJson = JSON.stringify(res);
+
+  return context.body(resJson, code, contentType);
 };
